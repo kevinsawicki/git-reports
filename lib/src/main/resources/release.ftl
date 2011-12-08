@@ -29,10 +29,10 @@
 					<li>${added?size} files added</li>
 					<li>${modified?size} files changed</li>
 					<li>${deleted?size} files removed</li>
-					<li>Started with commit <code>${getName(start)}</code> by
+					<li>Started with commit <code>${getName(end)}</code> by
 						${end.authorIdent.name}
 					</li>
-					<li>Ended with commit <code>${getName(end)}</code> by
+					<li>Ended with commit <code>${getName(start)}</code> by
 						${start.authorIdent.name}
 					</li>
 				</ul>
