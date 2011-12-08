@@ -364,7 +364,7 @@ public class ReleaseReport {
 
 		commits = countFilter.getCount();
 
-		TreeWalk walk = TreeUtils.diffWithCommits(repository, start, end);
+		TreeWalk walk = TreeUtils.diffWithCommits(repository, end, start);
 		walk.setRecursive(true);
 		for (DiffEntry diff : DiffEntry.scan(walk)) {
 			switch (diff.getChangeType()) {
