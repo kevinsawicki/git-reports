@@ -12,7 +12,7 @@
 		<div class="page-header">
 			<h1>
 				${projectName} ${projectVersion} <small>
-					${end.authorIdent.when?string("EEEEE, MMMMM d")} -
+					${end.authorIdent.when?string("EEEEE, MMMMM d yyyy")} -
 					${start.authorIdent.when?string("EEEEE, MMMMM d yyyy")}</small>
 			</h1>
 		</div>
