@@ -31,6 +31,7 @@ tpl.process(report, writer);
 
 * [JGit 1.2 Release](http://kevinsawicki.github.com/git-reports/jgit-1.2.html)
 * [EGit 1.2 Release](http://kevinsawicki.github.com/git-reports/egit-1.2.html)
+* [Spring Framework 3.1.0 Release](http://kevinsawicki.github.com/git-reports/spring-3.1.0.html)
 
 ## Dependencies
 
