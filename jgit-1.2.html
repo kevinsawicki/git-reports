@@ -1,0 +1,236 @@
+<html>
+<head>
+<link rel="stylesheet" href="bootstrap.min.css">
+<link rel="stylesheet" href="core.css">
+<script src="jquery.js"></script>
+<script src="bootstrap-tabs.js"></script>
+</head>
+<title>JGit 1.2 Release</title>
+<body>
+
+	<div class="container">
+		<div class="page-header">
+			<h1>
+				JGit 1.2 <small>
+					Thursday, September 15 -
+					Wednesday, December 14 2011</small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<h3>Quick Facts</h3>
+				<ul>
+					<li><a href="https://github.com/eclipse/jgit/compare/57d6585522af279d311b11af64339c209c08f6be...52507ee2e7a826adc7a3d37b3234f102754aa579">104 commits</a></li>
+					<li>16 authors</li>
+					<li>14 committers</li>
+					<li>14,485 lines added</li>
+					<li>842 lines changed</li>
+					<li>2,632 lines removed</li>
+					<li>50 files added</li>
+					<li>108 files changed</li>
+					<li>3 files removed</li>
+					<li>Started with commit <code><a href="https://github.com/eclipse/jgit/commit/57d6585522af279d311b11af64339c209c08f6be">57d6585522af279d311b11af64339c209c08f6be</a></code> by
+						Matthias Sohn
+					</li>
+					<li>Ended with commit <code><a href="https://github.com/eclipse/jgit/commit/52507ee2e7a826adc7a3d37b3234f102754aa579">52507ee2e7a826adc7a3d37b3234f102754aa579</a></code> by
+						Kevin Sawicki
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="page-header" id="contributors">
+			<h1>
+				Contributors <small>who made the changes</small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="span5">
+				<h3>
+					Authors <small>16</small>
+				</h3>
+				<ul>
+					<li>Carl Myers&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Carsten Pfeiffer&nbsp;&nbsp;<span class="label success">2</span></li>
+					<li>Christian Halstrick&nbsp;&nbsp;<span class="label success">4</span></li>
+					<li>Colby Ranger&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Dariusz Luksza&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Dave Borowitz&nbsp;&nbsp;<span class="label success">9</span></li>
+					<li>Jens Baumgart&nbsp;&nbsp;<span class="label success">3</span></li>
+					<li>Kevin Sawicki&nbsp;&nbsp;<span class="label success">18</span></li>
+					<li>Manuel Doninger&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Marc Strapetz&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Matthias Sohn&nbsp;&nbsp;<span class="label success">13</span></li>
+					<li>Roberto Tyley&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Robin Rosenberg&nbsp;&nbsp;<span class="label success">27</span></li>
+					<li>Robin Stocker&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Sasa Zivkov&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Shawn O. Pearce&nbsp;&nbsp;<span class="label success">20</span></li>
+				</ul>
+			</div>
+			<div class="span5">
+				<h3>
+					Committers <small>14</small>
+				</h3>
+				<ul>
+					<li>Carsten Pfeiffer&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Chris Aniszczyk&nbsp;&nbsp;<span class="label success">7</span></li>
+					<li>Christian Halstrick&nbsp;&nbsp;<span class="label success">5</span></li>
+					<li>Dariusz Luksza&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Dave Borowitz&nbsp;&nbsp;<span class="label success">3</span></li>
+					<li>Jens Baumgart&nbsp;&nbsp;<span class="label success">2</span></li>
+					<li>Kevin Sawicki&nbsp;&nbsp;<span class="label success">14</span></li>
+					<li>Marc Strapetz&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Matthias Sohn&nbsp;&nbsp;<span class="label success">21</span></li>
+					<li>Roberto Tyley&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Robin Rosenberg&nbsp;&nbsp;<span class="label success">20</span></li>
+					<li>Robin Stocker&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Shawn O. Pearce&nbsp;&nbsp;<span class="label success">27</span></li>
+					<li>SystemConfig&nbsp;&nbsp;<span class="label success">20</span></li>
+				</ul>
+			</div>
+			<div class="span5">
+				<h3>
+					First Timers <small>4</small>
+				</h3>
+				<ul>
+					<li>Carl Myers&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Colby Ranger&nbsp;&nbsp;<span class="label success">1</span></li>
+					<li>Dave Borowitz&nbsp;&nbsp;<span class="label success">9</span></li>
+					<li>Manuel Doninger&nbsp;&nbsp;<span class="label success">1</span></li>
+				</ul>
+			</div>
+		</div>
+		<div class="page-header" id="commits">
+			<h1>
+				Commits <small>biggest changes in this release</small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="span8">
+				<h3>Most Lines Changed</h3>
+				<ol>
+					<li><code><a href="https://github.com/eclipse/jgit/commit/fa4cc2475fb127783e98ddb56b6c1fd155cd2bc4">fa4cc24</a></code> by
+						Shawn O. Pearce&nbsp;&nbsp;<span
+						class="label success">+7,775</span> <span
+						class="label warning">0</span> <span
+						class="label important">-0</span></li> 					<li><code><a href="https://github.com/eclipse/jgit/commit/83c172f0f7d1fb5ceb14fd58704ae18dc59a1e33">83c172f</a></code> by
+						Robin Rosenberg&nbsp;&nbsp;<span
+						class="label success">+759</span> <span
+						class="label warning">51</span> <span
+						class="label important">-803</span></li> 					<li><code><a href="https://github.com/eclipse/jgit/commit/6e9fdce9b9c9d2271b9310999ffff1ddbfc7c36f">6e9fdce</a></code> by
+						Robin Rosenberg&nbsp;&nbsp;<span
+						class="label success">+0</span> <span
+						class="label warning">0</span> <span
+						class="label important">-1,592</span></li> 					<li><code><a href="https://github.com/eclipse/jgit/commit/0ca105a502a5edb0abf1c344772426a6184f20cb">0ca105a</a></code> by
+						Robin Rosenberg&nbsp;&nbsp;<span
+						class="label success">+1,484</span> <span
+						class="label warning">38</span> <span
+						class="label important">-0</span></li> 					<li><code><a href="https://github.com/eclipse/jgit/commit/c3554ac583c4c4e09264a61495b83c58c1740180">c3554ac</a></code> by
+						Shawn O. Pearce&nbsp;&nbsp;<span
+						class="label success">+622</span> <span
+						class="label warning">65</span> <span
+						class="label important">-20</span></li> 					<li><code><a href="https://github.com/eclipse/jgit/commit/867087bb1119aa0ed52c01095c121229929c007e">867087b</a></code> by
+						Shawn O. Pearce&nbsp;&nbsp;<span
+						class="label success">+326</span> <span
+						class="label warning">29</span> <span
+						class="label important">-67</span></li> 					<li><code><a href="https://github.com/eclipse/jgit/commit/da901c49688ef72858cd2b6904e0f8e478fa0ec3">da901c4</a></code> by
+						Kevin Sawicki&nbsp;&nbsp;<span
+						class="label success">+156</span> <span
+						class="label warning">36</span> <span
+						class="label important">-176</span></li> 					<li><code><a href="https://github.com/eclipse/jgit/commit/f4460dda97541fb2b97daa08d7c39c676ec8511d">f4460dd</a></code> by
+						Robin Rosenberg&nbsp;&nbsp;<span
+						class="label success">+326</span> <span
+						class="label warning">0</span> <span
+						class="label important">-0</span></li> 					<li><code><a href="https://github.com/eclipse/jgit/commit/98d4bd6d36d98940f5fd0b6a3e20147cb96903c0">98d4bd6</a></code> by
+						Carsten Pfeiffer&nbsp;&nbsp;<span
+						class="label success">+269</span> <span
+						class="label warning">1</span> <span
+						class="label important">-0</span></li> 					<li><code><a href="https://github.com/eclipse/jgit/commit/1fbe688f51cbc1d951dee5443ae0b9d801904c93">1fbe688</a></code> by
+						Sasa Zivkov&nbsp;&nbsp;<span
+						class="label success">+237</span> <span
+						class="label warning">5</span> <span
+						class="label important">-0</span></li> 
+				</ol>
+			</div>
+			<div class="span8">
+				<h3>Most Files Changed</h3>
+				<ol>
+					<li><code><a href="https://github.com/eclipse/jgit/commit/19a366d532f829bb4955f7344b68d9b2c9514fc7">19a366d</a></code> by
+						Matthias Sohn&nbsp;&nbsp;<span
+						class="label success">+0</span> <span
+						class="label warning">40</span> <span
+						class="label important">-0</span></li>					<li><code><a href="https://github.com/eclipse/jgit/commit/fa4cc2475fb127783e98ddb56b6c1fd155cd2bc4">fa4cc24</a></code> by
+						Shawn O. Pearce&nbsp;&nbsp;<span
+						class="label success">+33</span> <span
+						class="label warning">3</span> <span
+						class="label important">-0</span></li>					<li><code><a href="https://github.com/eclipse/jgit/commit/0ca105a502a5edb0abf1c344772426a6184f20cb">0ca105a</a></code> by
+						Robin Rosenberg&nbsp;&nbsp;<span
+						class="label success">+15</span> <span
+						class="label warning">16</span> <span
+						class="label important">-0</span></li>					<li><code><a href="https://github.com/eclipse/jgit/commit/867087bb1119aa0ed52c01095c121229929c007e">867087b</a></code> by
+						Shawn O. Pearce&nbsp;&nbsp;<span
+						class="label success">+1</span> <span
+						class="label warning">7</span> <span
+						class="label important">-0</span></li>					<li><code><a href="https://github.com/eclipse/jgit/commit/e178ba20d096e9b1572b2fdeb5b1e207ea55802c">e178ba2</a></code> by
+						Matthias Sohn&nbsp;&nbsp;<span
+						class="label success">+0</span> <span
+						class="label warning">6</span> <span
+						class="label important">-0</span></li>					<li><code><a href="https://github.com/eclipse/jgit/commit/0db047654263144234a66fe3806811801a61da4f">0db0476</a></code> by
+						Matthias Sohn&nbsp;&nbsp;<span
+						class="label success">+0</span> <span
+						class="label warning">5</span> <span
+						class="label important">-0</span></li>					<li><code><a href="https://github.com/eclipse/jgit/commit/c3fe50bb18ed4e4e5e563172be4076fa5901a18a">c3fe50b</a></code> by
+						Kevin Sawicki&nbsp;&nbsp;<span
+						class="label success">+0</span> <span
+						class="label warning">4</span> <span
+						class="label important">-0</span></li>					<li><code><a href="https://github.com/eclipse/jgit/commit/b4ff1e1e034d9409f5f4fe805148712c31b104eb">b4ff1e1</a></code> by
+						Kevin Sawicki&nbsp;&nbsp;<span
+						class="label success">+0</span> <span
+						class="label warning">3</span> <span
+						class="label important">-0</span></li>					<li><code><a href="https://github.com/eclipse/jgit/commit/3c544647b7b3b291ad1f3661881f6d3bf9f90da4">3c54464</a></code> by
+						Christian Halstrick&nbsp;&nbsp;<span
+						class="label success">+0</span> <span
+						class="label warning">2</span> <span
+						class="label important">-0</span></li>					<li><code><a href="https://github.com/eclipse/jgit/commit/52507ee2e7a826adc7a3d37b3234f102754aa579">52507ee</a></code> by
+						Kevin Sawicki&nbsp;&nbsp;<span
+						class="label success">+0</span> <span
+						class="label warning">1</span> <span
+						class="label important">-0</span></li>
+				</ol>
+			</div>
+		</div>
+		<div class="page-header" id="files">
+			<h1>
+				Files <small>which were added, edited, and deleted</small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="span5">
+				<h3>
+					Edited <small>108</small>
+				</h3>
+				<ul>
+					<li>.classpath</li> 					<li>.project</li> 					<li>BasePackFetchConnection.java</li> 					<li>BlameCommandTest.java</li> 					<li>BlameGenerator.java</li> 					<li>BlameGeneratorTest.java</li> 					<li>CheckoutCommand.java</li> 					<li>CheckoutCommandTest.java</li> 					<li>CheckoutConflictException.java</li> 					<li>CherryPickCommand.java</li> 					<li>CherryPickCommandTest.java</li> 					<li>CLIText.properties</li> 					<li>CloneCommand.java</li> 					<li>CloneCommandTest.java</li> 					<li>CommitAndLogCommandTests.java</li> 					<li>CommitCommand.java</li> 					<li>Config.java</li> 					<li>ConfigConstants.java</li> 					<li>CredentialsProvider.java</li> 					<li>Daemon.java</li> 					<li>DhtRepository.java</li> 					<li>DirCache.java</li> 					<li>DirCacheBuilderTest.java</li> 					<li>DirCacheCheckout.java</li> 					<li>DirCacheCheckoutTest.java</li> 					<li>DirCacheEditor.java</li> 					<li>DirCacheEntry.java</li> 					<li>DirCacheFindTest.java</li> 					<li>feature.xml</li> 					<li>FetchCommand.java</li> 					<li>FileRepository.java</li> 					<li>FileTreeIterator.java</li> 					<li>FileTreeIteratorTest.java</li> 					<li>FindBugsExcludeFilter.xml</li> 					<li>FollowFilter.java</li> 					<li>FS.java</li> 					<li>FS_Win32_Cygwin.java</li> 					<li>GitServlet.java</li> 					<li>HttpClientTests.java</li> 					<li>HttpServerText.java</li> 					<li>HttpServerText.properties</li> 					<li>IgnoreRule.java</li> 					<li>IndexDiff.java</li> 					<li>IndexDiffFilter.java</li> 					<li>IndexDiffTest.java</li> 					<li>IO.java</li> 					<li>JGitText.java</li> 					<li>JGitText.properties</li> 					<li>JschConfigSessionFactory.java</li> 					<li>Log.java</li> 					<li>LogCommand.java</li> 					<li>LsRemoteCommand.java</li> 					<li>LsRemoteCommandTest.java</li> 					<li>MANIFEST.MF</li> 					<li>MergeCommand.java</li> 					<li>MergeCommandTest.java</li> 					<li>MergeMessageFormatter.java</li> 					<li>MergeMessageFormatterTest.java</li> 					<li>Merger.java</li> 					<li>MetaServlet.java</li> 					<li>MockSystemReader.java</li> 					<li>org.eclipse.jdt.core.prefs</li> 					<li>PackParser.java</li> 					<li>PackParserTest.java</li> 					<li>PackWriter.java</li> 					<li>PathCheckoutCommandTest.java</li> 					<li>PathFilterGroup.java</li> 					<li>PlotCommitList.java</li> 					<li>pom.xml</li> 					<li>PullCommand.java</li> 					<li>PullCommandTest.java</li> 					<li>PushCommand.java</li> 					<li>ReceivePack.java</li> 					<li>ReceivePackServlet.java</li> 					<li>ReflogEntry.java</li> 					<li>RegexGroupFilter.java</li> 					<li>RegexPipeline.java</li> 					<li>RelativeDateFormatter.java</li> 					<li>RelativeDateFormatterTest.java</li> 					<li>RenameDetector.java</li> 					<li>Repository.java</li> 					<li>RepositoryFilter.java</li> 					<li>RepositoryResolveTest.java</li> 					<li>RepositorySetupWorkDirTest.java</li> 					<li>RepositoryState.java</li> 					<li>ResolveMerger.java</li> 					<li>RevertCommand.java</li> 					<li>RevertCommandTest.java</li> 					<li>RevWalk.java</li> 					<li>RevWalkTestCase.java</li> 					<li>RevWalkTextBuiltin.java</li> 					<li>RewriteTreeFilter.java</li> 					<li>SmartServiceInfoRefs.java</li> 					<li>SOURCE-MANIFEST.MF</li> 					<li>StatusCommand.java</li> 					<li>SystemReader.java</li> 					<li>TransportHttp.java</li> 					<li>TreeEntry.java</li> 					<li>TreeWalk.java</li> 					<li>UnionInputStream.java</li> 					<li>UnionInputStreamTest.java</li> 					<li>UploadPack.java</li> 					<li>UploadPackServlet.java</li> 					<li>URIish.java</li> 					<li>URIishTest.java</li> 					<li>UrlPipeline.java</li> 					<li>version.sh</li> 					<li>WorkingTreeIterator.java</li> 
+				</ul>
+			</div>
+			<div class="span5">
+				<h3>
+					Added <small>50</small>
+				</h3>
+				<ul>
+					<li>CountingOutputStream.java</li> 					<li>DeltaBaseCache.java</li> 					<li>DfsBlock.java</li> 					<li>DfsBlockCache.java</li> 					<li>DfsBlockCacheConfig.java</li> 					<li>DfsCachedPack.java</li> 					<li>DfsConfig.java</li> 					<li>DfsGarbageCollector.java</li> 					<li>DfsInserter.java</li> 					<li>DfsObjDatabase.java</li> 					<li>DfsObjectRepresentation.java</li> 					<li>DfsObjectToPack.java</li> 					<li>DfsOutputStream.java</li> 					<li>DfsPackCompactor.java</li> 					<li>DfsPackDescription.java</li> 					<li>DfsPackFile.java</li> 					<li>DfsPackKey.java</li> 					<li>DfsPackParser.java</li> 					<li>DfsPacksChangedEvent.java</li> 					<li>DfsPacksChangedListener.java</li> 					<li>DfsReader.java</li> 					<li>DfsReaderOptions.java</li> 					<li>DfsRefDatabase.java</li> 					<li>DfsRefRename.java</li> 					<li>DfsRefUpdate.java</li> 					<li>DfsRepository.java</li> 					<li>DfsRepositoryBuilder.java</li> 					<li>DfsRepositoryDescription.java</li> 					<li>DfsText.java</li> 					<li>DfsText.properties</li> 					<li>DirCachePathEditTest.java</li> 					<li>GitDateFormatter.java</li> 					<li>GitDateFormatterTest.java</li> 					<li>GitFilter.java</li> 					<li>GitSmartHttpTools.java</li> 					<li>InMemoryRepository.java</li> 					<li>LargePackedWholeObject.java</li> 					<li>LogCommandTest.java</li> 					<li>MetaFilter.java</li> 					<li>NoParameterFilterConfig.java</li> 					<li>org.eclipse.pde.api.tools.prefs</li> 					<li>PackInputStream.java</li> 					<li>ReadableChannel.java</li> 					<li>ReadAheadRejectedExecutionHandler.java</li> 					<li>ReadAheadTask.java</li> 					<li>RenameCallback.java</li> 					<li>RevWalkFollowFilterTest.java</li> 					<li>TooLargeObjectInPackException.java</li> 					<li>TransportCommand.java</li> 					<li>TransportConfigCallback.java</li> 
+				</ul>
+			</div>
+			<div class="span5">
+				<h3>
+					Deleted <small>3</small>
+				</h3>
+				<ul>
+					<li>GitIndex.java</li> 					<li>ReadTreeTest.java</li> 					<li>T0007_GitIndexTest.java</li> 
+				</ul>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
