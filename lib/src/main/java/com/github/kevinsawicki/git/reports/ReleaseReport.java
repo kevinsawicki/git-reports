@@ -110,6 +110,22 @@ public class ReleaseReport {
 
 	private String projectVersion;
 
+	private Linker linker;
+
+	/**
+	 * @param linker
+	 */
+	public void setLinker(Linker linker) {
+		this.linker = linker;
+	}
+
+	/**
+	 * @return linker
+	 */
+	public Linker getLinker() {
+		return linker;
+	}
+
 	/**
 	 * @param projectName
 	 */
@@ -294,7 +310,12 @@ public class ReleaseReport {
 	 * @param id
 	 * @return name
 	 */
-	public String getName(ObjectId id) {
+	public String getCommitName(ObjectId id) {
+		if (linker != null) {
+			String url = linker.getCommitUrl(id.name());
+			if (url != null)
+				return "<a href=\"" + url + "\">" + id.name() + "</a>";
+		}
 		return id.name();
 	}
 
@@ -304,8 +325,29 @@ public class ReleaseReport {
 	 * @param id
 	 * @return short name
 	 */
-	public String getShortName(ObjectId id) {
+	public String getCommitShortName(ObjectId id) {
+		if (linker != null) {
+			String url = linker.getCommitUrl(id.name());
+			if (url != null)
+				return "<a href=\"" + url + "\">" + id.abbreviate(7).name()
+						+ "</a>";
+		}
 		return id.abbreviate(7).name();
+	}
+
+	/**
+	 * Get compare link
+	 * 
+	 * @param label
+	 * @return commits
+	 */
+	public String getCompare(String label) {
+		if (linker != null) {
+			String url = linker.getCompareUrl(end.name(), start.name());
+			if (url != null)
+				return "<a href=\"" + url + "\">" + label + "</a>";
+		}
+		return label;
 	}
 
 	private String getName(String path) {

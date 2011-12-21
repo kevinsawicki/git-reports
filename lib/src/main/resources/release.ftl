@@ -20,7 +20,8 @@
 			<div class="span12">
 				<h3>Quick Facts</h3>
 				<ul>
-					<li>${commits} commits</li>
+					<#assign commitsLabel = "${commits} commits">
+					<li>${getCompare(commitsLabel)}</li>
 					<li>${authors?size} authors</li>
 					<li>${committers?size} committers</li>
 					<li>${linesAdded} lines added</li>
@@ -29,10 +30,10 @@
 					<li>${added?size} files added</li>
 					<li>${modified?size} files changed</li>
 					<li>${deleted?size} files removed</li>
-					<li>Started with commit <code>${getName(end)}</code> by
+					<li>Started with commit <code>${getCommitName(end)}</code> by
 						${end.authorIdent.name}
 					</li>
-					<li>Ended with commit <code>${getName(start)}</code> by
+					<li>Ended with commit <code>${getCommitName(start)}</code> by
 						${start.authorIdent.name}
 					</li>
 				</ul>
@@ -85,7 +86,7 @@
 				<h3>Most Lines Changed</h3>
 				<ol>
 					<#list mostLines as impact>
-					<li><code>${getShortName(impact.commit)}</code> by
+					<li><code>${getCommitShortName(impact.commit)}</code> by
 						${impact.commit.authorIdent.name}&nbsp;&nbsp;<span
 						class="label success">+${impact.add}</span> <span
 						class="label warning">${impact.edit}</span> <span
@@ -96,7 +97,7 @@
 				<h3>Most Files Changed</h3>
 				<ol>
 					<#list mostFiles as impact>
-					<li><code>${getShortName(impact.commit)}</code> by
+					<li><code>${getCommitShortName(impact.commit)}</code> by
 						${impact.commit.authorIdent.name}&nbsp;&nbsp;<span
 						class="label success">+${impact.add}</span> <span
 						class="label warning">${impact.edit}</span> <span
