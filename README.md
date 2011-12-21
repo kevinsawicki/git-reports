@@ -22,10 +22,15 @@ Repository repo = new FileRepository("/repos/egit/.git");
 RevCommit base = CommitUtils.getBase(repo, current, previous);
 report.run(repo, current, base.name());
 
-Template tpl = Templates.getTemplate("release";
+Template tpl = Templates.getTemplate("release");
 FileWriter writer = new FileWriter("/reports/egit.html");
 tpl.process(report, writer);
 ```
+
+## Example Generated Reports
+
+* [JGit 1.2 Release](http://kevinsawicki.github.com/git-reports/jgit-1.2.html)
+* [EGit 1.2 Release](http://kevinsawicki.github.com/git-reports/egit-1.2.html)
 
 ## Dependencies
 
