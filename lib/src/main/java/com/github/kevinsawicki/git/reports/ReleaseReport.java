@@ -53,6 +53,7 @@ import org.gitective.core.filter.commit.CommitFileImpactFilter;
 import org.gitective.core.filter.commit.CommitImpact;
 import org.gitective.core.filter.commit.CommitLineImpactFilter;
 import org.gitective.core.filter.commit.CommitterSetFilter;
+import org.gitective.core.filter.commit.LastCommitFilter;
 import org.gitective.core.stat.AuthorHistogramFilter;
 import org.gitective.core.stat.CommitHistogram;
 import org.gitective.core.stat.CommitterHistogramFilter;
@@ -76,9 +77,10 @@ public class ReleaseReport {
 
 	private Map<String, Set<String>> namesToEmails = new HashMap<String, Set<String>>();
 
-	private Set<String> authors = new TreeSet<String>();
+	private Set<String> authors = new TreeSet<String>(caseInsensitveComparator);
 
-	private Set<String> committers = new TreeSet<String>();
+	private Set<String> committers = new TreeSet<String>(
+			caseInsensitveComparator);
 
 	private Set<String> files = new TreeSet<String>();
 
@@ -368,7 +370,11 @@ public class ReleaseReport {
 	public void run(Repository repository, String start, String end)
 			throws IOException {
 		this.start = CommitUtils.getCommit(repository, start);
-		this.end = CommitUtils.getCommit(repository, end);
+		LastCommitFilter last = null;
+		if (end != null)
+			this.end = CommitUtils.getCommit(repository, end);
+		else
+			last = new LastCommitFilter();
 
 		CommitFinder finder = new CommitFinder(repository);
 		AuthorSetFilter authorsFilter = new AuthorSetFilter();
@@ -384,10 +390,17 @@ public class ReleaseReport {
 		matcher.add(authorHistogramFilter, committerHistogramFilter);
 		matcher.add(new AllDiffFilter(lineImpactFilter, fileImpactFilter));
 		matcher.add(countFilter);
+		if (last != null)
+			matcher.add(last);
 
 		finder.setMatcher(new AllCommitFilter(new AndCommitFilter(NO_MERGES,
 				matcher)));
-		finder.findBetween(start, end);
+		if (end != null)
+			finder.findBetween(start, end);
+		else
+			finder.findFrom(start);
+		if (last != null)
+			this.end = last.getLast();
 
 		mostFiles = fileImpactFilter.getCommits();
 		mostLines = lineImpactFilter.getCommits();
