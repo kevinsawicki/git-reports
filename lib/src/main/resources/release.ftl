@@ -28,7 +28,7 @@
 					<li>${linesEdited} lines changed</li>
 					<li>${linesDeleted} lines removed</li>
 					<li>${added?size} files added</li>
-					<li>${modified?size} files changed</li>
+					<li>${modified?size} files edited</li>
 					<li>${deleted?size} files removed</li>
 					<li>Started with commit <code>${getCommitName(end)}</code> by
 						${end.authorIdent.name}
