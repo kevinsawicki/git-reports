@@ -1,0 +1,101 @@
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<link rel="stylesheet" href="bootstrap.min.css">
+<link rel="stylesheet" href="core.css">
+<script src="jquery.js"></script>
+<script src="bootstrap-tabs.js"></script>
+</head>
+<title>${projectName} ${projectVersion}</title>
+<body>
+
+	<div class="container">
+		<div class="page-header">
+			<h1>
+				${projectName} ${projectVersion} <small>
+					${end.authorIdent.when?string("EEEEE, MMMMM d yyyy")} -
+					${start.authorIdent.when?string("EEEEE, MMMMM d yyyy")}</small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="span12">
+				<h3>Quick Facts</h3>
+				<ul>
+					<li>${commits} commits</li>
+					<li>${authors?size} authors</li>
+					<li>${committers?size} committers</li>
+					<li>${linesAdded} lines added</li>
+					<li>${linesEdited} lines changed</li>
+					<li>${linesDeleted} lines removed</li>
+					<li>${added} files added</li>
+					<li>${modified} files edited</li>
+					<li>${deleted} files removed</li>
+					<li>Started with commit <code>${getCommitName(end)}</code> by
+						${end.authorIdent.name}
+					</li>
+					<li>Ended with commit <code>${getCommitName(start)}</code> by
+						${start.authorIdent.name}
+					</li>
+				</ul>
+			</div>
+		</div>
+		<div class="page-header" id="contributors">
+			<h1>
+				Contributors <small>who made the changes</small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="span8">
+				<h3>
+					Authors <small>${authors?size}</small>
+				</h3>
+				<ul>
+					<#list authors as author>
+					<li>${author}&nbsp;&nbsp;<span class="label success">${getAuthoredCommits(author)}</span></li>
+					</#list>
+				</ul>
+			</div>
+			<div class="span8">
+				<h3>
+					Committers <small>${committers?size}</small>
+				</h3>
+				<ul>
+					<#list committers as committer>
+					<li>${committer}&nbsp;&nbsp;<span class="label success">${getCommittedCommits(committer)}</span></li>
+					</#list>
+				</ul>
+			</div>
+		</div>
+		<div class="page-header" id="commits">
+			<h1>
+				Commits <small>biggest changes made</small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="span8">
+				<h3>Most Lines Changed</h3>
+				<ol>
+					<#list mostLines as impact>
+					<li><code>${getCommitShortName(impact.commit)}</code> by
+						${parseCommit(impact.commit).authorIdent.name}&nbsp;&nbsp;<span
+						class="label success">+${impact.add}</span> <span
+						class="label warning">${impact.edit}</span> <span
+						class="label important">-${impact.delete}</span></li> </#list>
+				</ol>
+			</div>
+			<div class="span8">
+				<h3>Most Files Changed</h3>
+				<ol>
+					<#list mostFiles as impact>
+					<li><code>${getCommitShortName(impact.commit)}</code> by
+						${parseCommit(impact.commit).authorIdent.name}&nbsp;&nbsp;<span
+						class="label success">+${impact.add}</span> <span
+						class="label warning">${impact.edit}</span> <span
+						class="label important">-${impact.delete}</span></li></#list>
+				</ol>
+			</div>
+		</div>
+	</div>
+</body>
+
+</html>
