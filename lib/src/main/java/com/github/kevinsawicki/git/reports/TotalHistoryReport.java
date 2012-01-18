@@ -57,6 +57,7 @@ import org.gitective.core.filter.commit.DiffFileCountFilter;
 import org.gitective.core.filter.commit.DiffFileSizeFilter;
 import org.gitective.core.filter.commit.DiffLineCountFilter;
 import org.gitective.core.filter.commit.DuplicateBlobFilter;
+import org.gitective.core.filter.commit.DuplicateContainer;
 import org.gitective.core.filter.commit.LastCommitFilter;
 import org.gitective.core.filter.commit.ParentCountFilter;
 import org.gitective.core.stat.AuthorHistogramFilter;
@@ -124,7 +125,7 @@ public class TotalHistoryReport {
 
 	private List<RevCommit> mergeConflicts;
 
-	private Set<RevCommit> dupes;
+	private Map<RevCommit, DuplicateContainer> dupes;
 
 	private String projectName;
 
@@ -235,8 +236,18 @@ public class TotalHistoryReport {
 	/**
 	 * @return dupes
 	 */
-	public Set<RevCommit> getDupes() {
-		return dupes;
+	public Collection<RevCommit> getDupeCommits() {
+		return dupes.keySet();
+	}
+
+	/**
+	 * Get dupe count for commit
+	 * 
+	 * @param commit
+	 * @return dupe count
+	 */
+	public int getDupeCount(RevCommit commit) {
+		return dupes.get(commit).getTotal();
 	}
 
 	/**
@@ -477,7 +488,10 @@ public class TotalHistoryReport {
 				mergeCountFilter), new AndCommitFilter(
 				new ParentCountFilter(2), new DiffFileSizeFilter(true, 1),
 				mergeConflictFilter)));
+		long startTime = System.currentTimeMillis();
 		finder.findFrom(start);
+		System.out.println("Walking repository took "
+				+ (System.currentTimeMillis() - startTime) + "ms");
 		this.end = last.getLast();
 
 		mostFiles = fileImpactFilter.getCommits();
@@ -488,7 +502,7 @@ public class TotalHistoryReport {
 		commits = countFilter.getCount();
 		merges = mergeCountFilter.getCount();
 		mergeConflicts = mergeConflictFilter.getCommits();
-		dupes = dupesFilter.getDuplicates().keySet();
+		dupes = dupesFilter.getDuplicates();
 
 		added = diffFileCountFilter.getAdded();
 		modified = diffFileCountFilter.getEdited();

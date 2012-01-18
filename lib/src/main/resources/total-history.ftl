@@ -115,12 +115,13 @@
 			</div>
 			<div class="span8">
 				<h3>
-					Commits With Duplicates <small>(${dupes?size})</small>
+					Commits With Duplicates <small>(${dupeCommits?size})</small>
 				</h3>
 				<ul>
-					<#list dupes as impact>
+					<#list dupeCommits as impact>
 					<li><code>${getCommitShortName(impact)}</code> by
-						${parseCommit(impact).authorIdent.name}</li> </#list>
+						${parseCommit(impact).authorIdent.name} (${getDupeCount(impact)})</li>
+					</#list>
 				</ul>
 			</div>
 		</div>
