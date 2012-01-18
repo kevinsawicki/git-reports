@@ -51,21 +51,21 @@
 				<h3>
 					Authors <small>${authors?size}</small>
 				</h3>
-				<ul>
+				<ol>
 					<#list authors as author>
 					<li>${author}&nbsp;&nbsp;<span class="label success">${getAuthoredCommits(author)}</span></li>
 					</#list>
-				</ul>
+				</ol>
 			</div>
 			<div class="span8">
 				<h3>
 					Committers <small>${committers?size}</small>
 				</h3>
-				<ul>
+				<ol>
 					<#list committers as committer>
 					<li>${committer}&nbsp;&nbsp;<span class="label success">${getCommittedCommits(committer)}</span></li>
 					</#list>
-				</ul>
+				</ol>
 			</div>
 		</div>
 		<div class="page-header" id="commits">
@@ -107,21 +107,21 @@
 				<h3>
 					Merge Commits With Content Changes <small>(${mergeConflicts?size})</small>
 				</h3>
-				<ol>
+				<ul>
 					<#list mergeConflicts as impact>
 					<li><code>${getCommitShortName(impact)}</code> by
 						${parseCommit(impact).authorIdent.name}</li> </#list>
-				</ol>
+				</ul>
 			</div>
 			<div class="span8">
 				<h3>
 					Commits With Duplicates <small>(${dupes?size})</small>
 				</h3>
-				<ol>
+				<ul>
 					<#list dupes as impact>
 					<li><code>${getCommitShortName(impact)}</code> by
 						${parseCommit(impact).authorIdent.name}</li> </#list>
-				</ol>
+				</ul>
 			</div>
 		</div>
 	</div>

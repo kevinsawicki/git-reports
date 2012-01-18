@@ -76,16 +76,25 @@ public class TotalHistoryReport {
 		}
 	};
 
+	private final Comparator<String> mostCommitsComparator = new Comparator<String>() {
+
+		public int compare(String s1, String s2) {
+			int commitDiff = getAuthoredCommits(s2) - getAuthoredCommits(s1);
+			if (commitDiff != 0)
+				return commitDiff;
+			return s1.compareToIgnoreCase(s2);
+		}
+	};
+
 	private CommitHistogram authorHistogram;
 
 	private CommitHistogram committerHistogram;
 
 	private Map<String, Set<String>> namesToEmails = new HashMap<String, Set<String>>();
 
-	private Set<String> authors = new TreeSet<String>(caseInsensitveComparator);
+	private Set<String> authors = new TreeSet<String>(mostCommitsComparator);
 
-	private Set<String> committers = new TreeSet<String>(
-			caseInsensitveComparator);
+	private Set<String> committers = new TreeSet<String>(mostCommitsComparator);
 
 	private Set<String> files = new TreeSet<String>();
 
@@ -476,16 +485,6 @@ public class TotalHistoryReport {
 		authorHistogram = authorHistogramFilter.getHistogram();
 		committerHistogram = committerHistogramFilter.getHistogram();
 
-		Map<String, Set<String>> authorNamesToEmails = mergeIdentities(authorsFilter
-				.getPersons());
-		namesToEmails.putAll(authorNamesToEmails);
-		authors.addAll(authorNamesToEmails.keySet());
-
-		Map<String, Set<String>> committerNamesToEmails = mergeIdentities(committersFilter
-				.getPersons());
-		namesToEmails.putAll(committerNamesToEmails);
-		committers.addAll(committerNamesToEmails.keySet());
-
 		commits = countFilter.getCount();
 		merges = mergeCountFilter.getCount();
 		mergeConflicts = mergeConflictFilter.getCommits();
@@ -497,5 +496,15 @@ public class TotalHistoryReport {
 		linesAdded = diffLineCountFilter.getAdded();
 		linesEdited = diffLineCountFilter.getEdited();
 		linesDeleted = diffLineCountFilter.getDeleted();
+
+		Map<String, Set<String>> authorNamesToEmails = mergeIdentities(authorsFilter
+				.getPersons());
+		namesToEmails.putAll(authorNamesToEmails);
+		Map<String, Set<String>> committerNamesToEmails = mergeIdentities(committersFilter
+				.getPersons());
+		namesToEmails.putAll(committerNamesToEmails);
+
+		authors.addAll(authorNamesToEmails.keySet());
+		committers.addAll(committerNamesToEmails.keySet());
 	}
 }
