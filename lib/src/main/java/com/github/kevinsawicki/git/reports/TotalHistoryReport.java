@@ -488,10 +488,7 @@ public class TotalHistoryReport {
 				mergeCountFilter), new AndCommitFilter(
 				new ParentCountFilter(2), new DiffFileSizeFilter(true, 1),
 				mergeConflictFilter)));
-		long startTime = System.currentTimeMillis();
 		finder.findFrom(start);
-		System.out.println("Walking repository took "
-				+ (System.currentTimeMillis() - startTime) + "ms");
 		this.end = last.getLast();
 
 		mostFiles = fileImpactFilter.getCommits();
