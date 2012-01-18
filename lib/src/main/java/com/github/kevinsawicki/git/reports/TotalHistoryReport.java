@@ -27,6 +27,7 @@ import java.io.IOException;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -50,10 +51,14 @@ import org.gitective.core.filter.commit.CommitCountFilter;
 import org.gitective.core.filter.commit.CommitFileImpactFilter;
 import org.gitective.core.filter.commit.CommitImpact;
 import org.gitective.core.filter.commit.CommitLineImpactFilter;
+import org.gitective.core.filter.commit.CommitListFilter;
 import org.gitective.core.filter.commit.CommitterSetFilter;
 import org.gitective.core.filter.commit.DiffFileCountFilter;
+import org.gitective.core.filter.commit.DiffFileSizeFilter;
 import org.gitective.core.filter.commit.DiffLineCountFilter;
+import org.gitective.core.filter.commit.DuplicateBlobFilter;
 import org.gitective.core.filter.commit.LastCommitFilter;
+import org.gitective.core.filter.commit.ParentCountFilter;
 import org.gitective.core.stat.AuthorHistogramFilter;
 import org.gitective.core.stat.CommitHistogram;
 import org.gitective.core.stat.CommitterHistogramFilter;
@@ -105,6 +110,12 @@ public class TotalHistoryReport {
 	private long deleted;
 
 	private long commits;
+
+	private long merges;
+
+	private List<RevCommit> mergeConflicts;
+
+	private Set<RevCommit> dupes;
 
 	private String projectName;
 
@@ -196,6 +207,27 @@ public class TotalHistoryReport {
 	 */
 	public long getCommits() {
 		return commits;
+	}
+
+	/**
+	 * @return merges
+	 */
+	public long getMerges() {
+		return merges;
+	}
+
+	/**
+	 * @return mergeConflicts
+	 */
+	public List<RevCommit> getMergeConflicts() {
+		return mergeConflicts;
+	}
+
+	/**
+	 * @return dupes
+	 */
+	public Set<RevCommit> getDupes() {
+		return dupes;
 	}
 
 	/**
@@ -416,6 +448,9 @@ public class TotalHistoryReport {
 				100);
 		DiffLineCountFilter diffLineCountFilter = new DiffLineCountFilter();
 		DiffFileCountFilter diffFileCountFilter = new DiffFileCountFilter();
+		CommitCountFilter mergeCountFilter = new CommitCountFilter();
+		CommitListFilter mergeConflictFilter = new CommitListFilter();
+		DuplicateBlobFilter dupesFilter = new DuplicateBlobFilter();
 
 		AllCommitFilter matcher = new AllCommitFilter();
 		matcher.add(authorsFilter, committersFilter);
@@ -423,12 +458,16 @@ public class TotalHistoryReport {
 		matcher.add(new AllDiffFilter(true, diffFileCountFilter,
 				fileImpactFilter, new AllDiffEditFilter(diffLineCountFilter,
 						lineImpactFilter)));
+		matcher.add(dupesFilter);
 		matcher.add(countFilter);
 		if (last != null)
 			matcher.add(last);
 
 		finder.setMatcher(new AllCommitFilter(new AndCommitFilter(NO_MERGES,
-				matcher)));
+				matcher), new AndCommitFilter(new ParentCountFilter(2),
+				mergeCountFilter), new AndCommitFilter(
+				new ParentCountFilter(2), new DiffFileSizeFilter(true, 1),
+				mergeConflictFilter)));
 		finder.findFrom(start);
 		this.end = last.getLast();
 
@@ -448,6 +487,9 @@ public class TotalHistoryReport {
 		committers.addAll(committerNamesToEmails.keySet());
 
 		commits = countFilter.getCount();
+		merges = mergeCountFilter.getCount();
+		mergeConflicts = mergeConflictFilter.getCommits();
+		dupes = dupesFilter.getDuplicates().keySet();
 
 		added = diffFileCountFilter.getAdded();
 		modified = diffFileCountFilter.getEdited();

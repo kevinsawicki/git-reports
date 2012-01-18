@@ -22,6 +22,8 @@
 				<h3>Quick Facts</h3>
 				<ul>
 					<li>${commits} commits</li>
+					<li>${merges} merge commits</li>
+					<li>${mergeConflicts?size} merges with content changes</li>
 					<li>${authors?size} authors</li>
 					<li>${committers?size} committers</li>
 					<li>${linesAdded} lines added</li>
@@ -92,6 +94,33 @@
 						class="label success">+${impact.add}</span> <span
 						class="label warning">${impact.edit}</span> <span
 						class="label important">-${impact.delete}</span></li></#list>
+				</ol>
+			</div>
+		</div>
+		<div class="page-header" id="commits">
+			<h1>
+				Danger Zone <small>questionable activity</small>
+			</h1>
+		</div>
+		<div class="row">
+			<div class="span8">
+				<h3>
+					Merge Commits With Content Changes <small>(${mergeConflicts?size})</small>
+				</h3>
+				<ol>
+					<#list mergeConflicts as impact>
+					<li><code>${getCommitShortName(impact)}</code> by
+						${parseCommit(impact).authorIdent.name}</li> </#list>
+				</ol>
+			</div>
+			<div class="span8">
+				<h3>
+					Commits With Duplicates <small>(${dupes?size})</small>
+				</h3>
+				<ol>
+					<#list dupes as impact>
+					<li><code>${getCommitShortName(impact)}</code> by
+						${parseCommit(impact).authorIdent.name}</li> </#list>
 				</ol>
 			</div>
 		</div>
