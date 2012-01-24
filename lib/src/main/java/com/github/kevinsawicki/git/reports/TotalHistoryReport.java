@@ -21,8 +21,6 @@
  */
 package com.github.kevinsawicki.git.reports;
 
-import static org.eclipse.jgit.revwalk.filter.RevFilter.NO_MERGES;
-
 import java.io.IOException;
 import java.util.Collection;
 import java.util.Comparator;
@@ -242,7 +240,7 @@ public class TotalHistoryReport {
 
 	/**
 	 * Get dupe count for commit
-	 * 
+	 *
 	 * @param commit
 	 * @return dupe count
 	 */
@@ -315,7 +313,7 @@ public class TotalHistoryReport {
 
 	/**
 	 * Get number of commits authored by name
-	 * 
+	 *
 	 * @param name
 	 * @return commit count
 	 */
@@ -334,7 +332,7 @@ public class TotalHistoryReport {
 
 	/**
 	 * Get number of commits committed by name
-	 * 
+	 *
 	 * @param name
 	 * @return commit count
 	 */
@@ -353,7 +351,7 @@ public class TotalHistoryReport {
 
 	/**
 	 * Get name for id
-	 * 
+	 *
 	 * @param id
 	 * @return name
 	 */
@@ -368,7 +366,7 @@ public class TotalHistoryReport {
 
 	/**
 	 * Get abbreviated name for id
-	 * 
+	 *
 	 * @param id
 	 * @return short name
 	 */
@@ -384,7 +382,7 @@ public class TotalHistoryReport {
 
 	/**
 	 * Get compare link
-	 * 
+	 *
 	 * @param label
 	 * @return commits
 	 */
@@ -399,7 +397,7 @@ public class TotalHistoryReport {
 
 	/**
 	 * Parse commit
-	 * 
+	 *
 	 * @param id
 	 * @return commit
 	 */
@@ -446,7 +444,7 @@ public class TotalHistoryReport {
 
 	/**
 	 * Generate report for repository
-	 * 
+	 *
 	 * @param repository
 	 * @param start
 	 * @throws IOException
@@ -454,43 +452,51 @@ public class TotalHistoryReport {
 	public void run(Repository repository, String start) throws IOException {
 		this.repository = repository;
 		this.start = CommitUtils.getCommit(repository, start);
+
 		LastCommitFilter last = new LastCommitFilter();
 
-		CommitFinder finder = new CommitFinder(repository);
+		CommitCountFilter countFilter = new CommitCountFilter();
+
 		AuthorSetFilter authorsFilter = new AuthorSetFilter();
 		CommitterSetFilter committersFilter = new CommitterSetFilter();
-		CommitCountFilter countFilter = new CommitCountFilter();
+
 		AuthorHistogramFilter authorHistogramFilter = new AuthorHistogramFilter();
 		CommitterHistogramFilter committerHistogramFilter = new CommitterHistogramFilter();
+
 		CommitLineImpactFilter lineImpactFilter = new CommitLineImpactFilter(
 				100);
 		CommitFileImpactFilter fileImpactFilter = new CommitFileImpactFilter(
 				100);
+
 		DiffLineCountFilter diffLineCountFilter = new DiffLineCountFilter();
 		DiffFileCountFilter diffFileCountFilter = new DiffFileCountFilter();
+
 		CommitCountFilter mergeCountFilter = new CommitCountFilter();
 		CommitListFilter mergeConflictFilter = new CommitListFilter();
 		DuplicateBlobFilter dupesFilter = new DuplicateBlobFilter();
 
 		AllCommitFilter matcher = new AllCommitFilter();
+		matcher.add(dupesFilter);
+		matcher.add(countFilter);
+		matcher.add(last);
 		matcher.add(authorsFilter, committersFilter);
 		matcher.add(authorHistogramFilter, committerHistogramFilter);
 		matcher.add(new AllDiffFilter(true, diffFileCountFilter,
 				fileImpactFilter, new AllDiffEditFilter(diffLineCountFilter,
 						lineImpactFilter)));
-		matcher.add(dupesFilter);
-		matcher.add(countFilter);
-		if (last != null)
-			matcher.add(last);
 
-		finder.setMatcher(new AllCommitFilter(new AndCommitFilter(NO_MERGES,
-				matcher), new AndCommitFilter(new ParentCountFilter(2),
-				mergeCountFilter), new AndCommitFilter(
-				new ParentCountFilter(2), new DiffFileSizeFilter(true, 1),
-				mergeConflictFilter)));
+		AllCommitFilter parent = new AllCommitFilter();
+		parent.add(matcher);
+		parent.add(new AndCommitFilter(new ParentCountFilter(2),
+				mergeCountFilter));
+		parent.add(new AndCommitFilter(new ParentCountFilter(2),
+				new DiffFileSizeFilter(true, 1), mergeConflictFilter));
+
+		CommitFinder finder = new CommitFinder(repository);
+		finder.setMatcher(parent);
 		finder.findFrom(start);
-		this.end = last.getLast();
 
+		this.end = last.getLast();
 		mostFiles = fileImpactFilter.getCommits();
 		mostLines = lineImpactFilter.getCommits();
 		authorHistogram = authorHistogramFilter.getHistogram();
