@@ -68,6 +68,34 @@
 				</ol>
 			</div>
 		</div>
+		<div class="row">
+			<div class="span8">
+				<h3>
+					Author Line Impact <small>lines touched</small>
+				</h3>
+				<ol>
+					<#list authorLineImpacts as author>
+					<#assign impact = getAuthorLineImpact(author)>
+					<li>${author}&nbsp;&nbsp;<span class="label success">+${impact.add}</span>
+						<span class="label warning">${impact.edit}</span> <span
+						class="label important">-${impact.delete}</span></li>
+				    </#list>
+				</ol>
+			</div>
+			<div class="span8">
+				<h3>
+					Author File Impact <small>files touched</small>
+				</h3>
+				<ol>
+					<#list authorFileImpacts as author>
+					<#assign impact = getAuthorFileImpact(author)>
+					<li>${author}&nbsp;&nbsp;<span class="label success">+${impact.add}</span>
+						<span class="label warning">${impact.edit}</span> <span
+						class="label important">-${impact.delete}</span></li>
+				    </#list>
+				</ol>
+			</div>
+		</div>
 		<div class="page-header" id="commits">
 			<h1>
 				Commits <small>biggest changes made</small>

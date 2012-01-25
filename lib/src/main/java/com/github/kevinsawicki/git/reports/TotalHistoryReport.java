@@ -22,14 +22,15 @@
 package com.github.kevinsawicki.git.reports;
 
 import java.io.IOException;
+import java.util.Arrays;
 import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
-import java.util.SortedSet;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
@@ -68,6 +69,43 @@ import org.gitective.core.stat.UserCommitActivity;
  */
 public class TotalHistoryReport {
 
+	/**
+	 * Container for lines added, edited, and deleted
+	 */
+	public static class LineStats implements Comparable<LineStats> {
+
+		int add;
+
+		int edit;
+
+		int delete;
+
+		/**
+		 * @return add
+		 */
+		public int getAdd() {
+			return add;
+		}
+
+		/**
+		 * @return edit
+		 */
+		public int getEdit() {
+			return edit;
+		}
+
+		/**
+		 * @return delete
+		 */
+		public int getDelete() {
+			return delete;
+		}
+
+		public int compareTo(LineStats o) {
+			return (o.add + o.edit + o.delete) - (add + edit + delete);
+		}
+	}
+
 	private final Comparator<String> caseInsensitveComparator = new Comparator<String>() {
 
 		public int compare(String s1, String s2) {
@@ -93,13 +131,37 @@ public class TotalHistoryReport {
 
 	private Set<String> authors = new TreeSet<String>(mostCommitsComparator);
 
+	private Set<String> authorLineImpacts = new TreeSet<String>(
+			new Comparator<String>() {
+
+				public int compare(String s1, String s2) {
+					int commitDiff = getAuthorLineImpact(s1).compareTo(
+							getAuthorLineImpact(s2));
+					if (commitDiff != 0)
+						return commitDiff;
+					return s1.compareToIgnoreCase(s2);
+				}
+			});
+
+	private Set<String> authorFileImpacts = new TreeSet<String>(
+			new Comparator<String>() {
+
+				public int compare(String s1, String s2) {
+					int commitDiff = getAuthorFileImpact(s1).compareTo(
+							getAuthorFileImpact(s2));
+					if (commitDiff != 0)
+						return commitDiff;
+					return s1.compareToIgnoreCase(s2);
+				}
+			});
+
 	private Set<String> committers = new TreeSet<String>(mostCommitsComparator);
 
 	private Set<String> files = new TreeSet<String>();
 
-	private SortedSet<CommitImpact> mostFiles;
+	private Map<ObjectId, CommitImpact> mostFiles = new LinkedHashMap<ObjectId, CommitImpact>();
 
-	private SortedSet<CommitImpact> mostLines;
+	private Map<ObjectId, CommitImpact> mostLines = new LinkedHashMap<ObjectId, CommitImpact>();
 
 	private RevCommit start;
 
@@ -256,6 +318,20 @@ public class TotalHistoryReport {
 	}
 
 	/**
+	 * @return authorImpacts
+	 */
+	public Set<String> getAuthorLineImpacts() {
+		return authorLineImpacts;
+	}
+
+	/**
+	 * @return authorImpacts
+	 */
+	public Set<String> getAuthorFileImpacts() {
+		return authorFileImpacts;
+	}
+
+	/**
 	 * @return committers
 	 */
 	public Set<String> getCommitters() {
@@ -272,15 +348,31 @@ public class TotalHistoryReport {
 	/**
 	 * @return mostFiles
 	 */
-	public SortedSet<CommitImpact> getMostFiles() {
-		return mostFiles;
+	public Collection<CommitImpact> getMostFiles() {
+		CommitImpact[] commits = new CommitImpact[Math.min(100,
+				mostFiles.size())];
+		int i = 0;
+		for (CommitImpact impact : mostFiles.values()) {
+			commits[i++] = impact;
+			if (i == commits.length)
+				break;
+		}
+		return Arrays.asList(commits);
 	}
 
 	/**
 	 * @return mostLines
 	 */
-	public SortedSet<CommitImpact> getMostLines() {
-		return mostLines;
+	public Collection<CommitImpact> getMostLines() {
+		CommitImpact[] commits = new CommitImpact[Math.min(100,
+				mostLines.size())];
+		int i = 0;
+		for (CommitImpact impact : mostLines.values()) {
+			commits[i++] = impact;
+			if (i == commits.length)
+				break;
+		}
+		return Arrays.asList(commits);
 	}
 
 	/**
@@ -328,6 +420,60 @@ public class TotalHistoryReport {
 				count += activity.getCount();
 		}
 		return count;
+	}
+
+	/**
+	 * Get line impact of author
+	 *
+	 * @param name
+	 * @return stats
+	 */
+	public LineStats getAuthorLineImpact(String name) {
+		Set<String> emails = namesToEmails.get(name);
+		if (emails == null)
+			return new LineStats();
+		LineStats stats = new LineStats();
+		for (String email : emails) {
+			UserCommitActivity activity = authorHistogram.getActivity(email);
+			if (activity == null)
+				continue;
+			for (ObjectId commit : activity.getIds()) {
+				CommitImpact impact = mostLines.get(commit);
+				if (impact != null) {
+					stats.add += impact.getAdd();
+					stats.edit += impact.getEdit();
+					stats.delete += impact.getDelete();
+				}
+			}
+		}
+		return stats;
+	}
+
+	/**
+	 * Get file impact of author
+	 *
+	 * @param name
+	 * @return stats
+	 */
+	public LineStats getAuthorFileImpact(String name) {
+		Set<String> emails = namesToEmails.get(name);
+		if (emails == null)
+			return new LineStats();
+		LineStats stats = new LineStats();
+		for (String email : emails) {
+			UserCommitActivity activity = authorHistogram.getActivity(email);
+			if (activity == null)
+				continue;
+			for (ObjectId commit : activity.getIds()) {
+				CommitImpact impact = mostFiles.get(commit);
+				if (impact != null) {
+					stats.add += impact.getAdd();
+					stats.edit += impact.getEdit();
+					stats.delete += impact.getDelete();
+				}
+			}
+		}
+		return stats;
 	}
 
 	/**
@@ -464,9 +610,9 @@ public class TotalHistoryReport {
 		CommitterHistogramFilter committerHistogramFilter = new CommitterHistogramFilter();
 
 		CommitLineImpactFilter lineImpactFilter = new CommitLineImpactFilter(
-				100);
+				Integer.MAX_VALUE);
 		CommitFileImpactFilter fileImpactFilter = new CommitFileImpactFilter(
-				100);
+				Integer.MAX_VALUE);
 
 		DiffLineCountFilter diffLineCountFilter = new DiffLineCountFilter();
 		DiffFileCountFilter diffFileCountFilter = new DiffFileCountFilter();
@@ -497,8 +643,10 @@ public class TotalHistoryReport {
 		finder.findFrom(start);
 
 		this.end = last.getLast();
-		mostFiles = fileImpactFilter.getCommits();
-		mostLines = lineImpactFilter.getCommits();
+		for (CommitImpact impact : fileImpactFilter)
+			mostFiles.put(impact.getCommit(), impact);
+		for (CommitImpact impact : lineImpactFilter)
+			mostLines.put(impact.getCommit(), impact);
 		authorHistogram = authorHistogramFilter.getHistogram();
 		committerHistogram = committerHistogramFilter.getHistogram();
 
@@ -522,6 +670,8 @@ public class TotalHistoryReport {
 		namesToEmails.putAll(committerNamesToEmails);
 
 		authors.addAll(authorNamesToEmails.keySet());
+		authorLineImpacts.addAll(authorNamesToEmails.keySet());
+		authorFileImpacts.addAll(authorNamesToEmails.keySet());
 		committers.addAll(committerNamesToEmails.keySet());
 	}
 }
