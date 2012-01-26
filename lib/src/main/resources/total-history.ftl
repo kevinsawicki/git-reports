@@ -32,10 +32,10 @@
 					<li>${added} files added</li>
 					<li>${modified} files edited</li>
 					<li>${deleted} files removed</li>
-					<li>Started with commit <code>${getCommitName(end)}</code> by
+					<li>First commit was <code>${getCommitName(end)}</code> by
 						${end.authorIdent.name}
 					</li>
-					<li>Ended with commit <code>${getCommitName(start)}</code> by
+					<li>Latest commit is <code>${getCommitName(start)}</code> by
 						${start.authorIdent.name}
 					</li>
 				</ul>
@@ -127,7 +127,7 @@
 		</div>
 		<div class="page-header" id="commits">
 			<h1>
-				Danger Zone <small>questionable activity</small>
+				Danger Zone
 			</h1>
 		</div>
 		<div class="row">
@@ -143,7 +143,7 @@
 			</div>
 			<div class="span8">
 				<h3>
-					Commits With Duplicates <small>(${dupeCommits?size})</small>
+					Commits With Duplicate Blobs <small>(${dupeCommits?size})</small>
 				</h3>
 				<ul>
 					<#list dupeCommits as impact>
