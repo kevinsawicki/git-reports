@@ -87,7 +87,7 @@
 				<ol>
 					<#list mostLines as impact>
 					<li><code>${getCommitShortName(impact.commit)}</code> by
-						${impact.commit.authorIdent.name}&nbsp;&nbsp;<span
+						${parseCommit(impact.commit).authorIdent.name}&nbsp;&nbsp;<span
 						class="label success">+${impact.add}</span> <span
 						class="label warning">${impact.edit}</span> <span
 						class="label important">-${impact.delete}</span></li> </#list>
@@ -98,7 +98,7 @@
 				<ol>
 					<#list mostFiles as impact>
 					<li><code>${getCommitShortName(impact.commit)}</code> by
-						${impact.commit.authorIdent.name}&nbsp;&nbsp;<span
+						${parseCommit(impact.commit).authorIdent.name}&nbsp;&nbsp;<span
 						class="label success">+${impact.add}</span> <span
 						class="label warning">${impact.edit}</span> <span
 						class="label important">-${impact.delete}</span></li></#list>

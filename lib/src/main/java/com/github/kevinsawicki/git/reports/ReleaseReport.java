@@ -88,6 +88,8 @@ public class ReleaseReport {
 
 	private SortedSet<CommitImpact> mostLines;
 
+	private Repository repository;
+
 	private RevCommit start;
 
 	private RevCommit end;
@@ -270,7 +272,7 @@ public class ReleaseReport {
 
 	/**
 	 * Get number of commits authored by name
-	 * 
+	 *
 	 * @param name
 	 * @return commit count
 	 */
@@ -289,7 +291,7 @@ public class ReleaseReport {
 
 	/**
 	 * Get number of commits committed by name
-	 * 
+	 *
 	 * @param name
 	 * @return commit count
 	 */
@@ -308,7 +310,7 @@ public class ReleaseReport {
 
 	/**
 	 * Get name for id
-	 * 
+	 *
 	 * @param id
 	 * @return name
 	 */
@@ -323,7 +325,7 @@ public class ReleaseReport {
 
 	/**
 	 * Get abbreviated name for id
-	 * 
+	 *
 	 * @param id
 	 * @return short name
 	 */
@@ -339,7 +341,7 @@ public class ReleaseReport {
 
 	/**
 	 * Get compare link
-	 * 
+	 *
 	 * @param label
 	 * @return commits
 	 */
@@ -360,8 +362,18 @@ public class ReleaseReport {
 	}
 
 	/**
+	 * Parse commit
+	 *
+	 * @param id
+	 * @return commit
+	 */
+	public RevCommit parseCommit(ObjectId id) {
+		return CommitUtils.getCommit(repository, id);
+	}
+
+	/**
 	 * Generate report for repository
-	 * 
+	 *
 	 * @param repository
 	 * @param start
 	 * @param end
@@ -369,6 +381,7 @@ public class ReleaseReport {
 	 */
 	public void run(Repository repository, String start, String end)
 			throws IOException {
+		this.repository = repository;
 		this.start = CommitUtils.getCommit(repository, start);
 		LastCommitFilter last = null;
 		if (end != null)
