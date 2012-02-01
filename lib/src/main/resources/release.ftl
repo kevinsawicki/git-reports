@@ -30,6 +30,7 @@
 					<li>${added?size} files added</li>
 					<li>${modified?size} files edited</li>
 					<li>${deleted?size} files removed</li>
+					<li>${renamed?size} files renamed/moved</li>
 					<li>Started with commit <code>${getCommitName(end)}</code> by
 						${end.authorIdent.name}
 					</li>
@@ -111,7 +112,7 @@
 			</h1>
 		</div>
 		<div class="row">
-			<div class="span5">
+			<div class="span4">
 				<h3>
 					Edited <small>${modified?size}</small>
 				</h3>
@@ -120,7 +121,7 @@
 					<li>${edit}</li> </#list>
 				</ul>
 			</div>
-			<div class="span5">
+			<div class="span4">
 				<h3>
 					Added <small>${added?size}</small>
 				</h3>
@@ -129,13 +130,22 @@
 					<li>${add}</li> </#list>
 				</ul>
 			</div>
-			<div class="span5">
+			<div class="span4">
 				<h3>
 					Deleted <small>${deleted?size}</small>
 				</h3>
 				<ul>
 					<#list deleted as delete>
 					<li>${delete}</li> </#list>
+				</ul>
+			</div>
+			<div class="span4">
+				<h3>
+					Renamed/Moved <small>${renamed?size}</small>
+				</h3>
+				<ul>
+					<#list renamed as rename>
+					<li>${rename}</li> </#list>
 				</ul>
 			</div>
 		</div>

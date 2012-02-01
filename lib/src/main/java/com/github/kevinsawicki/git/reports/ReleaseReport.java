@@ -24,6 +24,7 @@ package com.github.kevinsawicki.git.reports;
 import static org.eclipse.jgit.revwalk.filter.RevFilter.NO_MERGES;
 
 import java.io.IOException;
+import java.util.Collection;
 import java.util.Comparator;
 import java.util.HashMap;
 import java.util.Map;
@@ -37,8 +38,8 @@ import org.eclipse.jgit.lib.ObjectId;
 import org.eclipse.jgit.lib.PersonIdent;
 import org.eclipse.jgit.lib.Repository;
 import org.eclipse.jgit.revwalk.RevCommit;
+import org.eclipse.jgit.revwalk.RevWalk;
 import org.eclipse.jgit.treewalk.TreeWalk;
-import org.gitective.core.BlobUtils;
 import org.gitective.core.CommitFinder;
 import org.gitective.core.CommitUtils;
 import org.gitective.core.RepositoryUtils;
@@ -49,6 +50,7 @@ import org.gitective.core.filter.commit.AndCommitFilter;
 import org.gitective.core.filter.commit.AuthorFilter;
 import org.gitective.core.filter.commit.AuthorSetFilter;
 import org.gitective.core.filter.commit.CommitCountFilter;
+import org.gitective.core.filter.commit.CommitDiffEditFilter;
 import org.gitective.core.filter.commit.CommitFileImpactFilter;
 import org.gitective.core.filter.commit.CommitImpact;
 import org.gitective.core.filter.commit.CommitLineImpactFilter;
@@ -105,6 +107,8 @@ public class ReleaseReport {
 	private Set<String> modified = new TreeSet<String>(caseInsensitveComparator);
 
 	private Set<String> deleted = new TreeSet<String>(caseInsensitveComparator);
+
+	private Set<String> renamed = new TreeSet<String>(caseInsensitveComparator);
 
 	private Set<String> firstTimers = new TreeSet<String>();
 
@@ -198,6 +202,13 @@ public class ReleaseReport {
 	 */
 	public Set<String> getDeleted() {
 		return deleted;
+	}
+
+	/**
+	 * @return renamed
+	 */
+	public Set<String> getRenamed() {
+		return renamed;
 	}
 
 	/**
@@ -379,8 +390,8 @@ public class ReleaseReport {
 	 * @param end
 	 * @throws IOException
 	 */
-	public void run(Repository repository, String start, String end)
-			throws IOException {
+	public void run(final Repository repository, final String start,
+			final String end) throws IOException {
 		this.repository = repository;
 		this.start = CommitUtils.getCommit(repository, start);
 		LastCommitFilter last = null;
@@ -401,7 +412,7 @@ public class ReleaseReport {
 		AllCommitFilter matcher = new AllCommitFilter();
 		matcher.add(authorsFilter, committersFilter);
 		matcher.add(authorHistogramFilter, committerHistogramFilter);
-		matcher.add(new AllDiffFilter(lineImpactFilter, fileImpactFilter));
+		matcher.add(new AllDiffFilter(true, lineImpactFilter, fileImpactFilter));
 		matcher.add(countFilter);
 		if (last != null)
 			matcher.add(last);
@@ -432,24 +443,36 @@ public class ReleaseReport {
 
 		commits = countFilter.getCount();
 
-		TreeWalk walk = TreeUtils.diffWithCommits(repository, end, start);
-		walk.setRecursive(true);
-		for (DiffEntry diff : DiffEntry.scan(walk)) {
-			switch (diff.getChangeType()) {
-			case ADD:
-				added.add(getName(diff.getNewPath()));
-				break;
-			case DELETE:
-				deleted.add(getName(diff.getOldPath()));
-				break;
-			case MODIFY:
-				modified.add(getName(diff.getNewPath()));
-				break;
-			default:
-				break;
+		CommitDiffEditFilter releaseFilter = new CommitDiffEditFilter(true) {
+
+			protected TreeWalk createTreeWalk(RevWalk walker, RevCommit commit) {
+				TreeWalk walk = TreeUtils.diffWithCommits(repository, end,
+						commit.name());
+				walk.setRecursive(true);
+				return walk;
 			}
-			for (Edit edit : BlobUtils.diff(repository, diff.getOldId()
-					.toObjectId(), diff.getNewId().toObjectId()))
+
+			protected boolean include(RevCommit commit, DiffEntry diff,
+					Collection<Edit> edits) {
+				switch (diff.getChangeType()) {
+				case ADD:
+					added.add(getName(diff.getNewPath()));
+					break;
+				case DELETE:
+					deleted.add(getName(diff.getOldPath()));
+					break;
+				case MODIFY:
+					modified.add(getName(diff.getNewPath()));
+					break;
+				case RENAME:
+					renamed.add(getName(diff.getNewPath()));
+					break;
+				}
+				return super.include(commit, diff, edits);
+			}
+
+			protected boolean include(RevCommit commit, DiffEntry diff,
+					Edit edit) {
 				switch (edit.getType()) {
 				case DELETE:
 					linesDeleted += edit.getLengthA();
@@ -460,9 +483,17 @@ public class ReleaseReport {
 				case REPLACE:
 					linesEdited += edit.getLengthB();
 					break;
-				default:
-					break;
 				}
+				return true;
+			}
+		};
+		releaseFilter.setRepository(repository);
+
+		RevWalk walk = new RevWalk(repository);
+		try {
+			releaseFilter.include(walk, this.start);
+		} finally {
+			walk.release();
 		}
 
 		AllCommitFilter firstTimerFilter = new AllCommitFilter();
