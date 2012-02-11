@@ -28,6 +28,12 @@ FileWriter writer = new FileWriter("/reports/egit.html");
 tpl.process(report, writer);
 ```
 
+#### Example Generated Reports
+
+* [JGit 1.2 Release](http://kevinsawicki.github.com/git-reports/jgit-1.2.html)
+* [EGit 1.2 Release](http://kevinsawicki.github.com/git-reports/egit-1.2.html)
+* [Spring Framework 3.1.0 Release](http://kevinsawicki.github.com/git-reports/spring-3.1.0.html)
+
 ### Total History Report
 
 The following snippet creates a comprehensive reports of a repository's entire
@@ -51,11 +57,9 @@ FileWriter writer = new FileWriter("/reports/node.html");
 tpl.process(report, writer);
 ```
 
-## Example Generated Reports
+#### Example Generated Reports
 
-* [JGit 1.2 Release](http://kevinsawicki.github.com/git-reports/jgit-1.2.html)
-* [EGit 1.2 Release](http://kevinsawicki.github.com/git-reports/egit-1.2.html)
-* [Spring Framework 3.1.0 Release](http://kevinsawicki.github.com/git-reports/spring-3.1.0.html)
+* [node](http://kevinsawicki.github.com/git-reports/node.html)
 
 ## Dependencies
 
