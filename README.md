@@ -23,7 +23,31 @@ RevCommit base = CommitUtils.getBase(repo, current, previous);
 report.run(repo, current, base.name());
 
 Template tpl = Templates.getTemplate("release");
+tpl.setOutputEncoding("UTF-8");
 FileWriter writer = new FileWriter("/reports/egit.html");
+tpl.process(report, writer);
+```
+
+### Total History Report
+
+The following snippet creates a comprehensive reports of a repository's entire
+history
+
+```java
+TotalHistoryReport report = new TotalHistoryReport();
+report.setProjectName("node");
+report.setProjectVersion("master branch");
+
+GitHubLinker linker = new GitHubLinker();
+linker.setBase("https://github.com/joyent/node");
+report.setLinker(linker);
+
+Repository repo = new FileRepository("/repos/node/.git");
+report.run(repo, "master");
+
+Template tpl = Templates.getTemplate("total-history");
+tpl.setOutputEncoding("UTF-8");
+FileWriter writer = new FileWriter("/reports/node.html");
 tpl.process(report, writer);
 ```
 
