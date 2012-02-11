@@ -59,7 +59,7 @@ tpl.process(report, writer);
 
 #### Example Generated Reports
 
-* [node](http://kevinsawicki.github.com/git-reports/node.html)
+* [joyent/node master branch](http://kevinsawicki.github.com/git-reports/node.html)
 
 ## Dependencies
 
